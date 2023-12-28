@@ -34,7 +34,7 @@ export function ReportTab({ report }: ReportProps) {
             <span>Horas esperadas</span>
           </InlineItem.Wrapper>
 
-          <span>{report.expectedWorkedHours} horas</span>
+          <span>{report.expectedWorkedHours.toFixed(2)} horas</span>
         </InlineItem.Root>
 
         <Separator />
@@ -45,7 +45,7 @@ export function ReportTab({ report }: ReportProps) {
             <span>Horas trabalhadas</span>
           </InlineItem.Wrapper>
 
-          <span>{report.totalWorkedHours} horas</span>
+          <span>{report.totalWorkedHours.toFixed(2)} horas</span>
         </InlineItem.Root>
         <Separator />
 

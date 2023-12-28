@@ -1,4 +1,3 @@
-import { Clock } from 'lucide-react'
 import { ImageResponse } from 'next/og'
 
 // Route segment config
