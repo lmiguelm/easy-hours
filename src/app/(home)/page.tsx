@@ -7,6 +7,7 @@ import { minutesToHours } from '@/utils/minutes-to-hour'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ReportTab } from './components/report-tab'
 import { CalculeTab } from './components/calcule-tab'
+import { toast } from 'sonner'
 
 const IS_VALID_DATE = /\d{2}\/\d{2}\/\d{4}/
 const HOURS_WORKED_A_DAY = 8
@@ -52,7 +53,9 @@ export default function Home() {
 
   const handleCalc = useCallback(() => {
     if (!isValidInput(spreadsheet)) {
-      return console.log('error')
+      return toast('Não foi possível extrair as horas!', {
+        description: 'Verifique se os dados foram informados corretamente.',
+      })
     }
 
     const formattedSpreadSheet = formatSpreadsheet(spreadsheet)
