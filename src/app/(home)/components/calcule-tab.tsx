@@ -20,7 +20,7 @@ export function CalculeTab({
   return (
     <Card>
       <CardHeader className="flex items-center justify-center">
-        <h2 className="text-2xl">Cole abaixo o extrato do seu Timesheet</h2>
+        <h2 className="text-2xl">Extrato mensal Timesheet</h2>
 
         <span className="flex items-center text-muted-foreground text-sm gap-2">
           <Info className="w-4 h-4" />
