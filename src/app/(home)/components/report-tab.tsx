@@ -2,6 +2,7 @@ import { CalendarDays, Clock } from 'lucide-react'
 
 import { Card, CardContent } from '../../../components/ui/card'
 import { Separator } from '../../../components/ui/separator'
+import { InlineItem } from '@/components/inline-item'
 
 interface ReportProps {
   report: {
@@ -16,38 +17,42 @@ export function ReportTab({ report }: ReportProps) {
   return (
     <Card className="h-full">
       <CardContent className="mt-6 flex flex-col gap-2">
-        <div className="flex justify-between items-center">
-          <span className="flex items-center gap-2">
-            <CalendarDays className="h-4 w-4" />
-            Dias trabalhados
-          </span>
+        <InlineItem.Root>
+          <InlineItem.Wrapper>
+            <InlineItem.Icon icon={CalendarDays} />
+            <span>Dias trabalhados</span>
+          </InlineItem.Wrapper>
+
           <span>{report.totalWorkedDays} dias</span>
-        </div>
+        </InlineItem.Root>
 
         <Separator />
 
-        <div className="flex justify-between items-center">
-          <span className="flex items-center gap-2">
-            <Clock className="h-4 w-4" />
-            Horas esperadas
-          </span>
-          <span>{report.expectedWorkedHours.toFixed(2)} horas</span>
-        </div>
+        <InlineItem.Root>
+          <InlineItem.Wrapper>
+            <InlineItem.Icon icon={Clock} />
+            <span>Horas esperadas</span>
+          </InlineItem.Wrapper>
+
+          <span>{report.expectedWorkedHours} horas</span>
+        </InlineItem.Root>
 
         <Separator />
 
-        <div className="flex justify-between items-center">
-          <span className="flex items-center gap-2">
-            <Clock className="h-4 w-4" />
-            Horas trabalhadas
-          </span>
-          <span>{report.totalWorkedHours.toFixed(2)} horas</span>
-        </div>
+        <InlineItem.Root>
+          <InlineItem.Wrapper>
+            <InlineItem.Icon icon={Clock} />
+            <span>Horas trabalhadas</span>
+          </InlineItem.Wrapper>
 
+          <span>{report.totalWorkedHours} horas</span>
+        </InlineItem.Root>
         <Separator />
 
-        <div className="flex justify-between items-center ">
-          <span className="flex items-center gap-2">Saldo</span>
+        <InlineItem.Root>
+          <InlineItem.Wrapper>
+            <span>Saldo</span>
+          </InlineItem.Wrapper>
 
           <span
             data-isPositive={!report.balance.includes('-')}
@@ -55,7 +60,7 @@ export function ReportTab({ report }: ReportProps) {
           >
             {report.balance}
           </span>
-        </div>
+        </InlineItem.Root>
       </CardContent>
     </Card>
   )
