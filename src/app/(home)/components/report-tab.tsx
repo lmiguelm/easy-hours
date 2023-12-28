@@ -55,8 +55,8 @@ export function ReportTab({ report }: ReportProps) {
           </InlineItem.Wrapper>
 
           <span
-            data-isPositive={!report.balance.includes('-')}
-            className="data-[isPositive=true]:text-green-400 data-[isPositive=false]:text-red-400"
+            data-positive={!report.balance.includes('-')}
+            className="data-[positive=true]:text-green-400 data-[positive=false]:text-red-400"
           >
             {report.balance}
           </span>
