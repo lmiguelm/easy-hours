@@ -8,6 +8,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ReportTab } from './components/report-tab'
 import { CalculeTab } from './components/calcule-tab'
 
+const IS_VALID_DATE = /\d{2}\/\d{2}\/\d{4}/
+const HOURS_WORKED_A_DAY = 8
+const MINUTES_WORKED_INDEX = 7
+
 interface Report {
   totalWorkedDays: number
   totalWorkedHours: number
@@ -24,23 +28,38 @@ export default function Home() {
     setSpreadsheet(spreadsheet)
   }, [])
 
-  const handleCalc = useCallback(() => {
-    const formattedSpreadSheet = spreadsheet
+  function isValidInput(input: string) {
+    return input.match(IS_VALID_DATE)
+  }
+
+  function formatSpreadsheet(spreadsheet: string) {
+    return spreadsheet
       .replace(/(\r\n)/gm, '') // remove \n and \n
       .replace(/(\t)/gm, ' | ') // change \t to |
+  }
 
-    const allDays = formattedSpreadSheet.split(/\d{2}\/\d{2}\/\d{4}/) // getting from date
+  function getTotalWorkedDays(days: string[]) {
+    return days.filter((day) => !day.includes('-')).filter(Boolean)
+  }
 
-    const totalWorkedDays = allDays
-      .filter((day) => !day.includes('-'))
-      .filter(Boolean) // remove empty days
-
-    const totalMinutesWorked = totalWorkedDays.reduce(
-      (acc, currentValue) => acc + Number(currentValue.split('|')[7] ?? 0),
+  function getTotalMinuteWorked(totalWorkedDays: string[]) {
+    return totalWorkedDays.reduce(
+      (acc, currentValue) =>
+        acc + Number(currentValue.split('|')[MINUTES_WORKED_INDEX] ?? 0),
       0,
     )
+  }
 
-    const expectedTotalHours = totalWorkedDays.length * 8
+  const handleCalc = useCallback(() => {
+    if (!isValidInput(spreadsheet)) {
+      return console.log('error')
+    }
+
+    const formattedSpreadSheet = formatSpreadsheet(spreadsheet)
+    const days = formattedSpreadSheet.split(IS_VALID_DATE)
+    const totalWorkedDays = getTotalWorkedDays(days)
+    const totalMinutesWorked = getTotalMinuteWorked(totalWorkedDays)
+    const expectedTotalHours = totalWorkedDays.length * HOURS_WORKED_A_DAY
     const totalWorkedHours = minutesToHours(totalMinutesWorked)
 
     setReport({
