@@ -88,7 +88,7 @@ export default function Home() {
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
-        className="w-[700px] h-[700px]"
+        className="w-[750px] h-[500px]"
       >
         <TabsList className="w-full rounded">
           <TabsTrigger className="rounded flex-1 gap-2" value="calcule">

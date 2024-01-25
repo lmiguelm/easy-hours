@@ -31,7 +31,7 @@ export function CalculeTab({
 
       <CardContent>
         <Textarea
-          className="w-full h-[500px] p-4 resize-none scrollbar-thin scrollbar-track-transparent scrollbar-thumb-secondary scrollbar-corner-secondary"
+          className="w-full h-[250px] p-4 resize-none scrollbar-thin scrollbar-track-transparent scrollbar-thumb-secondary scrollbar-corner-secondary"
           placeholder={`Cole as horas do mês seguindo o exemplo:\n\n01/01/2024 09:00 12:00	13:00	18:00	0	0	480\n02/01/2024 09:00	12:00	14:00	18:00	0	0	480 \n...`}
           {...props}
         />
