@@ -15,7 +15,7 @@ interface ReportProps {
 
 export function ReportTab({ report }: ReportProps) {
   return (
-    <Card className="h-full">
+    <Card>
       <CardContent className="mt-6 flex flex-col gap-2">
         <InlineItem.Root>
           <InlineItem.Wrapper>
