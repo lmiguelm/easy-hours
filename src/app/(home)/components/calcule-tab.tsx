@@ -22,11 +22,14 @@ export function CalculeTab({
       <CardHeader className="flex items-center justify-center">
         <h2 className="text-2xl">Extrato mensal Timesheet</h2>
 
-        <span className="flex items-center text-muted-foreground text-sm gap-2">
+        <div className="flex items-baseline">
           <Info className="w-4 h-4" />
-          Caso não tenha finalizado o dia atual, o mesmo não será contabilizado
-          no extrato.
-        </span>
+
+          <span className="flex items-center text-muted-foreground text-sm gap-2 text-center">
+            Caso não tenha finalizado o dia atual, o mesmo só será contabilizado
+            caso os minutos trabalhos for maior que zero.
+          </span>
+        </div>
       </CardHeader>
 
       <CardContent>

@@ -8,10 +8,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ReportTab } from './components/report-tab'
 import { CalculeTab } from './components/calcule-tab'
 import { toast } from 'sonner'
+import { DAYS_OF_THE_WEEK } from '@/utils/days'
 
 const IS_VALID_DATE = /\d{2}\/\d{2}\/\d{4}/
 const HOURS_WORKED_A_DAY = 8
 const MINUTES_WORKED_INDEX = 7
+const DATE_INDEX = 0
 
 interface Report {
   totalWorkedDays: number
@@ -39,17 +41,54 @@ export default function Home() {
       .replace(/(\t)/gm, ' | ') // change \t to |
   }
 
-  function getTotalWorkedDays(days: string[]) {
-    return days.filter((day) => !day.includes('-')).filter(Boolean)
+  function getTotalMinutesWorkedPerDay(day: string) {
+    const minutes = Number(day.split('|')[MINUTES_WORKED_INDEX] ?? 0)
+
+    if (isNaN(minutes)) {
+      return 0
+    }
+
+    return minutes
   }
 
-  function getTotalMinuteWorked(totalWorkedDays: string[]) {
-    return totalWorkedDays.reduce(
-      (acc, currentValue) =>
-        acc + Number(currentValue.split('|')[MINUTES_WORKED_INDEX] ?? 0),
-      0,
+  function checkIfDateIsWeekend(dateString: string) {
+    const [day, month, year] = dateString.split('/')
+
+    const date = new Date(+year, +month - 1, +day)
+
+    return (
+      date.getDay() === DAYS_OF_THE_WEEK.SATURDAY ||
+      date.getDay() === DAYS_OF_THE_WEEK.SUNDAY
     )
   }
+
+  const getTotalWorkedDays = useCallback((days: string[]) => {
+    return days
+      .filter((day) => {
+        const totalWorkedMinutes = getTotalMinutesWorkedPerDay(day)
+        return totalWorkedMinutes > 0
+      })
+      .map((day) => {
+        const date = day.split('|')[DATE_INDEX]
+
+        const isWeekend = checkIfDateIsWeekend(date)
+
+        return {
+          day,
+          isWeekend,
+        }
+      })
+  }, [])
+
+  const getTotalMinuteWorked = useCallback(
+    (totalWorkedDays: { day: string; isWeekend: boolean }[]) => {
+      return totalWorkedDays.reduce(
+        (acc, row) => acc + getTotalMinutesWorkedPerDay(row.day),
+        0,
+      )
+    },
+    [],
+  )
 
   const handleCalc = useCallback(() => {
     if (!isValidInput(spreadsheet)) {
@@ -59,20 +98,28 @@ export default function Home() {
     }
 
     const formattedSpreadSheet = formatSpreadsheet(spreadsheet)
-    const days = formattedSpreadSheet.split(IS_VALID_DATE)
-    const totalWorkedDays = getTotalWorkedDays(days)
-    const totalMinutesWorked = getTotalMinuteWorked(totalWorkedDays)
-    const expectedTotalHours = totalWorkedDays.length * HOURS_WORKED_A_DAY
+    const days = formattedSpreadSheet.split('\n')
+
+    const totalDaysWorked = getTotalWorkedDays(days)
+    const totalMinutesWorked = getTotalMinuteWorked(totalDaysWorked)
+
+    const totalWorkingDaysWorked = totalDaysWorked.filter(
+      (day) => !day.isWeekend,
+    )
+
+    const expectedTotalHours =
+      totalWorkingDaysWorked.length * HOURS_WORKED_A_DAY
+
     const totalWorkedHours = minutesToHours(totalMinutesWorked)
 
     setReport({
-      totalWorkedDays: totalWorkedDays.length,
+      totalWorkedDays: totalDaysWorked.length,
       expectedWorkedHours: expectedTotalHours,
       totalWorkedHours,
     })
 
     setActiveTab('report')
-  }, [spreadsheet])
+  }, [getTotalMinuteWorked, getTotalWorkedDays, spreadsheet])
 
   const balance = useMemo(() => {
     if (report?.expectedWorkedHours && report?.totalWorkedHours) {
