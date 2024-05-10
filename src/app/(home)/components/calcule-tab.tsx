@@ -22,12 +22,11 @@ export function CalculeTab({
       <CardHeader className="flex items-center justify-center">
         <h2 className="text-2xl">Extrato mensal Timesheet</h2>
 
-        <div className="flex items-baseline">
-          <Info className="w-4 h-4" />
-
+        <div className="flex items-center gap-2">
           <span className="flex items-center text-muted-foreground text-sm gap-2 text-center">
-            Caso não tenha finalizado o dia atual, o mesmo só será contabilizado
-            caso os minutos trabalhos for maior que zero.
+            No momento a aplicação não identifica feriados. Caso tenha
+            trabalhado, o mesmo não será contabilizado como hora extra, mas sim
+            como dia útil (8 horas).
           </span>
         </div>
       </CardHeader>

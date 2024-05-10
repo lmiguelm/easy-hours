@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useMemo, useState } from 'react'
-import { Calculator, Clock } from 'lucide-react'
+import { Calculator, Clock, Github } from 'lucide-react'
 
 import { minutesToHours } from '@/utils/minutes-to-hour'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -9,6 +9,8 @@ import { ReportTab } from './components/report-tab'
 import { CalculeTab } from './components/calcule-tab'
 import { toast } from 'sonner'
 import { DAYS_OF_THE_WEEK } from '@/utils/days'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 const IS_VALID_DATE = /\d{2}\/\d{2}\/\d{4}/
 const HOURS_WORKED_A_DAY = 8
@@ -131,7 +133,7 @@ export default function Home() {
   }, [report?.expectedWorkedHours, report?.totalWorkedHours])
 
   return (
-    <div className="h-screen w-screen flex justify-center items-center bg-background">
+    <div className="h-screen w-screen flex flex-col justify-center items-center bg-background gap-6">
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
@@ -174,6 +176,15 @@ export default function Home() {
           />
         </TabsContent>
       </Tabs>
+
+      <Link target="_blank" href="https://github.com/lmiguelm/easy-hours">
+        <Button variant="link">
+          <div className="flex gap-2 items-center">
+            <Github className="size-5 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">Código fonte</span>
+          </div>
+        </Button>
+      </Link>
     </div>
   )
 }
